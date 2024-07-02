@@ -4,12 +4,7 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 from models.amenity import Amenity
-
-# place_amenity table for many-to-many relationship
-place_amenity = Table('place_amenity', Base.metadata,
-                              Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-                              Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False),
-                              extend_existing=True)
+import os
 
 
 class Place(BaseModel, Base):
@@ -28,27 +23,33 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
 
-    reviews = relationship("Review", backref="place", cascade="all, delete-orphan")
+   #reviews = relationship("Review", backref="place", cascade="all, delete-orphan")
     amenities = relationship("Amenity", secondary=place_amenity, viewonly=False, back_populates="place_amenities")
 
-#   @property
-#       def amenities(self):
-#        """ returns list of amenity instances"""
-#        from models import storage
-#        from models.amenity import Amenity
-#        amenity_list = []
-#        for amenity_id in self.amenity_ids:
-#            amenity = storage.get(Amenity, amenity_id)
-#            if amenity:
-#                amenity_list.append(amenity)
-#        return amenity_list
-#    
-#    @amenities.setter
-#    def amenities(self, amenity_obj):
-#        """ handles append method for adding an Amenity.id """
-#       from models.amenity import Amenity
-#        if isinstance(amenity_obj, Amenity):
-#            if amenity_obj.id not in self.amenity_ids:
-#                self.amenity_ids.append(amenity_obj.id)
-    
+    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+        # place_amenity table for many-to-many relationship
+        place_amenity = Table('place_amenity', Base.metadata,
+                              Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
+                              Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False))
 
+
+    if os.getenv('HBNB_TYPE_STORAGE') == 'file':
+        @property
+        def amenities(self):
+            """ returns list of amenity instances"""
+            from models import storage
+            from models.amenity import Amenity
+            amenity_list = []
+            for amenity_id in self.amenity_ids:
+                amenity = storage.get(Amenity, amenity_id)
+                if amenity:
+                    amenity_list.append(amenity)
+            return amenity_list
+    
+        @amenities.setter
+        def amenities(self, amenity_obj):
+            """ handles append method for adding an Amenity.id """
+            from models.amenity import Amenity
+            if isinstance(amenity_obj, Amenity):
+                if amenity_obj.id not in self.amenity_ids:
+                    self.amenity_ids.append(amenity_obj.id)

@@ -6,6 +6,11 @@ from models.base_model import BaseModel, Base
 from models.amenity import Amenity
 import os
 
+# place_amenity table for many-to-many relationship
+place_amenity = Table('place_amenity', Base.metadata,
+                              Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
+                              Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False))
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -23,14 +28,9 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
 
-   #reviews = relationship("Review", backref="place", cascade="all, delete-orphan")
-    amenities = relationship("Amenity", secondary="place_amenity", viewonly=False, back_populates="place_amenities")
-
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        # place_amenity table for many-to-many relationship
-        place_amenity = Table('place_amenity', Base.metadata,
-                              Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-                              Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False))
+        reviews = relationship("Review", backref="place", cascade="all, delete-orphan")
+        amenities = relationship("Amenity", secondary=place_amenity, viewonly=False, back_populates="place_amenities")
 
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'file':

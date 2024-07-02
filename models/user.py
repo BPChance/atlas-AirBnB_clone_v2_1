@@ -14,11 +14,7 @@ class User(BaseModel, Base):
     first_name = Column(String(128), nullable=True)
     last_name = Column(String(128), nullable=True)
 
-    places = relationship("Place", backref="user", cascade="all, delete-orphan")
-    reviews = relationship("Review", backref="user", cascade="all, delete-orphan")
-
-#    @property
-#    def reviews(self):
-#        from models import storage
-#        from models.review import Review
-#        return [review for review in storage.all(Review).values() if review.user_id == self.id]
+    places = relationship("Place", backref="user",
+                          cascade="all, delete-orphan")
+    reviews = relationship("Review", backref="user",
+                           cascade="all, delete-orphan")

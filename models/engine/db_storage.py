@@ -15,7 +15,6 @@ class DBStorage:
 
     __engine = None
     __session = None
-    
 
     def __init__(self):
         """Initalize DBStorage"""
@@ -32,7 +31,7 @@ class DBStorage:
 
         if env == "test":
             Base.metadata.drop_all(self.__engine)
-        
+
     def all(self, cls=None):
         """Query all objects on class name"""
         obj_dict = {}
@@ -48,15 +47,15 @@ class DBStorage:
                     key = f"{obj.__class__.__name__}.{obj.id}"
                     obj_dict[key] = obj
         return obj_dict
-    
+
     def new(self, obj):
         """Add the object to the current database session"""
         self.__session.add(obj)
-    
+
     def save(self):
         """Commit all changes of the current database session"""
         self.__session.commit()
-    
+
     def delete(self, obj=None):
         """Delete from the current database session if not None"""
         if obj:
@@ -65,9 +64,11 @@ class DBStorage:
     def reload(self):
         """Reload the database session"""
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
 
 if __name__ == "__main__":
     storage = DBStorage()

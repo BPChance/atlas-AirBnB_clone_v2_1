@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 """This module instantiates an object of storage based on eviroment variable"""
 import os
-from sqlalchemy import Table, Column, String, ForeignKey, MetaData
-
-metadata = MetaData()
 
 
 if os.getenv('HBNB_TYPE_STORAGE') == 'db':

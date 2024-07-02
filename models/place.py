@@ -33,8 +33,6 @@ class Place(BaseModel, Base):
     @property
     def amenities(self):
         """ returns list of amenity instances"""
-        from models import storage
-        from models.amenity import Amenity
         amenity_list = []
         for amenity_id in self.amenity_ids:
             amenity = storage.get(Amenity, amenity_id)
@@ -45,7 +43,6 @@ class Place(BaseModel, Base):
     @amenities.setter
     def amenities(self, amenity_obj):
         """ handles append method for adding an Amenity.id """
-        from models.amenity import Amenity
         if isinstance(amenity_obj, Amenity):
             if amenity_obj.id not in self.amenity_ids:
                 self.amenity_ids.append(amenity_obj.id)

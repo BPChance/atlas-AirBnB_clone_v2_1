@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This module instantiates an object of storage based on eviroment variable"""
 import os
-from sqlalchemy import Table, Column, String, ForignKey, MetaData
+from sqlalchemy import Table, Column, String, ForeignKey, MetaData
 
 metadata = MetaData()
 

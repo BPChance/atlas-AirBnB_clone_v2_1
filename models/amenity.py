@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, Table
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 # place_amenity table for many-to-many relationship

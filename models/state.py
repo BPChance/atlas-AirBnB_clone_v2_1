@@ -6,14 +6,14 @@ from sqlalchemy.orm import relationship
 import os
 
 
-
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     name = Column(String(128), nullable=False)
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        cities = relationship('City', backref='state', casade='all, delete, delete-orphane')
+        cities = relationship('City', backref='state',
+                              casade='all, delete, delete-orphane')
     else:
         @property
         def cities(self):

@@ -7,11 +7,13 @@ from models.amenity import Amenity
 import os
 
 # place_amenity table for many-to-many relationship
-place_amenity = Table('place_amenity', Base.metadata,
-                              Column('place_id', String(60), ForeignKey('places.id'),
-                                      primary_key=True, nullable=False),
-                              Column('amenity_id', String(60), ForeignKey('amenities.id'),
-                                      primary_key=True, nullable=False))
+place_amenity = Table('place_amenity', Base.metadata, 
+                        Column('place_id', String(60),
+                               ForeignKey('places.id'),
+                               primary_key=True, nullable=False),
+                        Column('amenity_id', String(60),
+                               ForeignKey('amenities.id'),
+                               primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -32,9 +34,9 @@ class Place(BaseModel, Base):
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship("Review", backref="place",
-                                cascade="all, delete-orphan")
+                               cascade="all, delete-orphan")
         amenities = relationship("Amenity", secondary=place_amenity,
-                                  viewonly=False, back_populates="place_amenities")
+                                 viewonly=False, back_populates="place_amenities")
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'file':
         @property
@@ -48,7 +50,7 @@ class Place(BaseModel, Base):
                 if amenity:
                     amenity_list.append(amenity)
             return amenity_list
-    
+
         @amenities.setter
         def amenities(self, amenity_obj):
             """ handles append method for adding an Amenity.id """

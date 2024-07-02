@@ -3,7 +3,6 @@
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
-from models.amenity import amenities
 
 # place_amenity table for many-to-many relationship
 place_amenity = Table('place_amenity', Base.metadata,
@@ -33,6 +32,8 @@ class Place(BaseModel, Base):
     @property
     def amenities(self):
         """ returns list of amenity instances"""
+        from models import storage
+        from models.amenity import Amenity
         amenity_list = []
         for amenity_id in self.amenity_ids:
             amenity = storage.get(Amenity, amenity_id)
@@ -43,6 +44,7 @@ class Place(BaseModel, Base):
     @amenities.setter
     def amenities(self, amenity_obj):
         """ handles append method for adding an Amenity.id """
+        from models.amenity import Amenity
         if isinstance(amenity_obj, Amenity):
             if amenity_obj.id not in self.amenity_ids:
                 self.amenity_ids.append(amenity_obj.id)

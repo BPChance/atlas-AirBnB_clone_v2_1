@@ -8,8 +8,10 @@ import os
 
 # place_amenity table for many-to-many relationship
 place_amenity = Table('place_amenity', Base.metadata,
-                              Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-                              Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False))
+                              Column('place_id', String(60), ForeignKey('places.id'),
+                                      primary_key=True, nullable=False),
+                              Column('amenity_id', String(60), ForeignKey('amenities.id'),
+                                      primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -29,9 +31,10 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        reviews = relationship("Review", backref="place", cascade="all, delete-orphan")
-        amenities = relationship("Amenity", secondary=place_amenity, viewonly=False, back_populates="place_amenities")
-
+        reviews = relationship("Review", backref="place",
+                                cascade="all, delete-orphan")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                  viewonly=False, back_populates="place_amenities")
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'file':
         @property

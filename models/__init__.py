@@ -11,3 +11,13 @@ else:
     storage = FileStorage()
 
 storage.reload()
+
+
+"""Importing after storage to avoid circular imports"""
+
+from models.user import User
+from models.place import Place
+from models.city import City
+from models.state import State
+from models.amenity import Amenity
+from models.review import Review

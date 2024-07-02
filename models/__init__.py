@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This module instantiates an object of storage based on eviroment variables"""
+"""This module instantiates an object of storage based on eviroment variable"""
 import os
 
 

@@ -7,8 +7,8 @@ from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from os import getenv
 
-Storage_t = getenv("HBNB_TYPE_STORAGE")
-if Storage_t == 'db':
+Storage_type = getenv("HBNB_TYPE_STORAGE")
+if Storage_type == 'db':
     Base = declarative_base()
 else:
     class Base:
@@ -18,7 +18,7 @@ else:
 class BaseModel:
     """A base class for all hbnb models"""
 
-    if Storage_t == 'db':
+    if Storage_type == 'db':
         id = Column(String(60), primary_key=True,
                     nullable=False, unique=True,
                     default=lambda: str(uuid.uuid4())

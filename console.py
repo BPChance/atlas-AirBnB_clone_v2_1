@@ -128,9 +128,13 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[class_name]()
 
         for param in args_list[1:]:
-            key, value = param.split('=', 1)
+            key_value = param.split('=', 1)
+            if len(key_value) != 2:
+                continue
+            key, value = key_value
+
             if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('_', ' ').replace('\\', '"')
+                value = value[1:-1].replace('_', ' ').replace('\\"', '"')
             elif '.' in value:
                 try:
                     value = float(value)

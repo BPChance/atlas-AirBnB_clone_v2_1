@@ -3,18 +3,19 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-import os
-
+import models
 
 class State(BaseModel, Base):
     """ State class """
-    __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
-
-    if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+    if models.storage_t == 'db':
+        __tablename__ = 'states'
+        name = Column(String(128), nullable=False)
         cities = relationship('City', backref='state',
                               casade='all, delete, delete-orphan')
     else:
+        name = ''
+        cities = []
+
         @property
         def cities(self):
             from models import storage

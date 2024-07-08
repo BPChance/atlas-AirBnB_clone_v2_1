@@ -7,7 +7,7 @@ from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import models
 
-if models.storage == 'db':
+if models.storage_t == 'db':
     Base = declarative_base()
 else:
     Base = object

@@ -11,7 +11,7 @@ class State(BaseModel, Base):
         __tablename__ = 'states'
         name = Column(String(128), nullable=False)
         cities = relationship('City', backref='state',
-                              casade='all, delete, delete-orphan')
+                              cascade='all, delete, delete-orphan')
     else:
         name = ''
         cities = []
